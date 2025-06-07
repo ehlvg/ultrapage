@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ultrapage</title>
+	<link rel="stylesheet" href="./styles.css">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+</head>
+
+<body class="font-sans bg-white dark:bg-black text-gray-900 dark:text-white min-h-screen p-3 sm:p-5 gradient-1"
+	id="body-element">
+	<div class="max-w-6xl mx-auto grid gap-4 sm:gap-6 grid-rows-[auto_auto_1fr]">
+		<!-- Header -->
+		<header class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-5 gap-3 sm:gap-4">
+			<div
+				class="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-3 sm:gap-5 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-3 rounded-2xl border border-black/10 dark:border-white/10 shadow-lg">
+				<div class="text-lg sm:text-xl font-semibold" id="current-time"></div>
+				<div class="flex items-center gap-2 text-gray-600 dark:text-gray-400" id="weather-info">
+					<i class="ph ph-sun"></i>
+					<span>Loading...</span>
+				</div>
+			</div>
+			<button onclick="openSettings()"
+				class="w-full sm:w-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-3 rounded-2xl border border-black/10 dark:border-white/10 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5">
+				<i class="ph ph-gear text-xl"></i>
+			</button>
+		</header>
+
+		<!-- Search -->
+		<div class="relative mx-auto w-full">
+			<input type="text"
+				class="w-full px-4 sm:px-6 py-3 sm:py-4 border-none rounded-3xl text-base sm:text-lg bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl text-gray-900 dark:text-white shadow-xl border border-black/10 dark:border-white/10 transition-all duration-300 focus:outline-none focus:-translate-y-0.5 focus:shadow-2xl focus:border-blue-500"
+				id="search-input" placeholder="Search or type a command (!g, !y, !r...)">
+			<div class="absolute top-full left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl mt-2 border border-black/10 dark:border-white/10 shadow-xl max-h-80 overflow-y-auto z-50 hidden"
+				id="search-suggestions"></div>
+		</div>
+
+		<!-- Main Content -->
+		<main>
+			<nav class="flex gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl p-2 rounded-2xl border border-black/10 dark:border-white/10 shadow-lg overflow-x-auto mb-4 sm:mb-6"
+				id="tabs-container"></nav>
+			<div id="content-container"></div>
+		</main>
+	</div>
+
+	<!-- Settings Dialog -->
+	<dialog id="settings-dialog"
+		class="backdrop:bg-black/50 backdrop:backdrop-blur-sm bg-transparent border-none p-0 w-[95vw] sm:max-w-[90vw] max-h-[90vh] overflow-hidden">
+		<div
+			class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
+			<div class="p-4 sm:p-6 border-b border-black/10 dark:border-white/10 flex justify-between items-center">
+				<h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Settings</h2>
+				<button onclick="closeSettings()"
+					class="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-gray-900 dark:text-white">
+					<i class="ph ph-x text-xl"></i>
+				</button>
+			</div>
+			<div class="p-4 sm:p-6 overflow-y-auto max-h-[70vh]">
+				<!-- Background Gradient Selection -->
+				<div class="mb-6 sm:mb-8">
+					<h3 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-white">Background Style</h3>
+					<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+						<button onclick="changeGradient(1)"
+							class="gradient-1 h-16 sm:h-20 rounded-xl border-2 border-transparent hover:border-blue-500 transition-all"></button>
+						<button onclick="changeGradient(2)"
+							class="gradient-2 h-16 sm:h-20 rounded-xl border-2 border-transparent hover:border-blue-500 transition-all"></button>
+						<button onclick="changeGradient(3)"
+							class="gradient-3 h-16 sm:h-20 rounded-xl border-2 border-transparent hover:border-blue-500 transition-all"></button>
+						<button onclick="changeGradient(4)"
+							class="gradient-4 h-16 sm:h-20 rounded-xl border-2 border-transparent hover:border-blue-500 transition-all"></button>
+					</div>
+				</div>
+
+				<!-- Sections Management -->
+				<div class="mb-6 sm:mb-8">
+					<div class="flex justify-between items-center mb-3 sm:mb-4 flex-wrap gap-2">
+						<h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Sections</h3>
+						<button onclick="addSection()"
+							class="px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors text-sm sm:text-base">
+							<i class="ph ph-plus mr-2"></i>Add Section
+						</button>
+					</div>
+					<div id="sections-list" class="space-y-3 sm:space-y-4"></div>
+				</div>
+			</div>
+		</div>
+	</dialog>
+
+	<!-- Section Edit Dialog -->
+	<dialog id="section-edit-dialog"
+		class="backdrop:bg-black/50 backdrop:backdrop-blur-sm bg-transparent border-none p-0 w-[95vw] sm:max-w-[90vw] max-h-[90vh] overflow-hidden">
+		<div
+			class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden">
+			<div class="p-4 sm:p-6 border-b border-black/10 dark:border-white/10 flex justify-between items-center">
+				<h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Edit Section</h2>
+				<button onclick="closeSectionEdit()"
+					class="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-gray-900 dark:text-white">
+					<i class="ph ph-x text-xl"></i>
+				</button>
+			</div>
+			<div class="p-4 sm:p-6 overflow-y-auto max-h-[70vh]">
+				<form id="section-form" class="space-y-6">
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<div>
+							<label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Section Name</label>
+							<input type="text" id="section-name"
+								class="w-full px-4 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
+						</div>
+						<div>
+							<label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Icon Name (Phosphor)</label>
+							<input type="text" id="section-icon" placeholder="briefcase"
+								class="w-full px-4 py-3 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400">
+						</div>
+					</div>
+					<div>
+						<div class="flex justify-between items-center mb-4">
+							<h3 class="text-base font-medium text-gray-900 dark:text-white">Items</h3>
+							<button type="button" onclick="addItem()"
+								class="px-4 py-2 bg-black/5 dark:bg-white/5 text-gray-900 dark:text-white rounded-xl hover:bg-black/10 dark:hover:bg-white/10 transition-colors text-sm font-medium flex items-center gap-2">
+								<i class="ph ph-plus"></i>
+								Add Item
+							</button>
+						</div>
+						<div id="items-list" class="space-y-3"></div>
+					</div>
+					<div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-black/10 dark:border-white/10">
+						<button type="submit"
+							class="flex-1 px-4 py-3 bg-black/5 dark:bg-white/5 text-gray-900 dark:text-white rounded-xl hover:bg-black/10 dark:hover:bg-white/10 transition-colors font-medium">Save Changes</button>
+						<button type="button" onclick="deleteSection()"
+							class="flex-1 px-4 py-3 bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500/20 transition-colors font-medium">Delete Section</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</dialog>
+
+	<!-- Vim Help -->
+	<div class="fixed bottom-3 sm:bottom-5 right-3 sm:right-5 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl p-3 sm:p-4 rounded-2xl border border-black/10 dark:border-white/10 shadow-xl text-xs sm:text-sm text-gray-600 dark:text-gray-400 opacity-0 translate-y-5 transition-all duration-300 z-50"
+		id="vim-help">
+		<div class="flex justify-between gap-3 sm:gap-5 mb-1">
+			<span><span class="font-mono bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded text-xs">/</span> Search</span>
+			<span><span class="font-mono bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded text-xs">j/k</span>
+				Navigate</span>
+		</div>
+		<div class="flex justify-between gap-3 sm:gap-5 mb-1">
+			<span><span class="font-mono bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded text-xs">1-9</span> Switch
+				Tab</span>
+			<span><span class="font-mono bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded text-xs">?</span> Help</span>
+		</div>
+		<div class="flex justify-between gap-3 sm:gap-5">
+			<span><span class="font-mono bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded text-xs">Enter</span>
+				Open</span>
+			<span><span class="font-mono bg-black/5 dark:bg-white/5 px-1.5 sm:px-2 py-0.5 rounded text-xs">Esc</span> Clear</span>
+		</div>
+	</div>
+	<script src="script.js"></script>
+</body>
+
+</html>

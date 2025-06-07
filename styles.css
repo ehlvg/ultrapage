@@ -1,0 +1,68 @@
+.gradient-1 {
+	background-image: radial-gradient(
+			circle at 20% 80%,
+			rgba(120, 119, 198, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 80% 20%,
+			rgba(255, 119, 198, 0.3) 0%,
+			transparent 50%
+		);
+}
+.gradient-2 {
+	background-image: radial-gradient(
+			circle at 25% 25%,
+			rgba(59, 130, 246, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 75% 75%,
+			rgba(16, 185, 129, 0.3) 0%,
+			transparent 50%
+		);
+}
+.gradient-3 {
+	background-image: radial-gradient(
+			circle at 10% 90%,
+			rgba(236, 72, 153, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 90% 10%,
+			rgba(251, 146, 60, 0.3) 0%,
+			transparent 50%
+		);
+}
+.gradient-4 {
+	background-image: radial-gradient(
+			circle at 30% 70%,
+			rgba(139, 92, 246, 0.3) 0%,
+			transparent 50%
+		),
+		radial-gradient(
+			circle at 70% 30%,
+			rgba(34, 197, 94, 0.3) 0%,
+			transparent 50%
+		);
+}
+
+dialog[open] {
+	animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(4px);
+}
+
+#vim-help {
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#vim-help.show {
+	opacity: 1;
+	transform: translateY(0);
+}
