@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .gradient-1 {
 	background-image: radial-gradient(
 			circle at 20% 80%,
@@ -65,4 +67,49 @@ dialog::backdrop {
 #vim-help.show {
 	opacity: 1;
 	transform: translateY(0);
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideUp {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scaleIn {
+	0% {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.fade-in {
+	animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-up {
+	animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scale-in {
+	animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }

@@ -169,7 +169,6 @@ class WeatherService {
 	async updateWeather() {
 		try {
 			const { lat, lon } = this.configManager.getConfig().location;
-			// Using a free weather service - you may want to use a different one with your API key
 			const response = await fetch(
 				`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m`
 			);
@@ -488,7 +487,7 @@ class TabManager {
         <div class="animate-fade-in ${
 			index === 0 ? "block" : "hidden"
 		}" data-content="${index}">
-            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl p-6 border border-black/10 dark:border-white/10 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
                     <h2 class="text-xl font-bold mb-5 text-gray-900 dark:text-white flex items-center gap-3">
                         <i class="ph ph-${section.icon}"></i>
@@ -681,12 +680,12 @@ function renderSectionsList() {
     
     container.innerHTML = config.sections.map((section, index) => `
         <div class="flex items-center justify-between p-4 bg-black/5 dark:bg-white/5 rounded-xl border border-black/10 dark:border-white/10 flex-wrap gap-2">
-            <div class="flex items-center gap-3 w-full flex-wrap">
+            <div class="flex items-center gap-3 flex-wrap">
                 <i class="ph ph-${section.icon} text-xl text-gray-900 dark:text-white"></i>
                 <span class="font-medium text-gray-900 dark:text-white">${section.name}</span>
                 <span class="text-sm text-gray-500 dark:text-gray-400">${section.items.length} items</span>
             </div>
-            <div class="flex gap-2 w-full">
+            <div class="flex gap-2">
                 <button onclick="editSection(${index})" class="px-3 py-1 w-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-200 rounded-lg text-sm hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors shadow-sm">
                     <i class="ph ph-pencil"></i>
                 </button>

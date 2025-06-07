@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.8",
+    "postcss": "^8.5.4",
+    "tailwindcss": "^4.1.8"
+  },
+  "name": "ultrapage",
+  "version": "1.0.0",
+  "description": "Modern self-hostable startpage",
+  "scripts": {
+    "dev": "npx parcel src/index.html",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehlvg/ultrapage.git"
+  },
+  "keywords": [],
+  "author": "Erich Helvig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ehlvg/ultrapage/issues"
+  },
+  "homepage": "https://github.com/ehlvg/ultrapage#readme",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "parcel": "^2.15.2"
+  }
+}
