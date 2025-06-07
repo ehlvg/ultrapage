@@ -1,3 +1,5 @@
+<img src="banner.png" width="400">
+
 # 🖤 ultrapage
 
 a beautiful, customizable browser startpage with vim-like navigation and modern design.
